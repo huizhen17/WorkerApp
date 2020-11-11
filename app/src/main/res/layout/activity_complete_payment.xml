@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBg"
+    tools:context=".CompletePayment">
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="363dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/button_bg"
+        android:fontFamily="sans-serif-black"
+        android:onClick="btnHome_onClick"
+        android:text="Home"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/constraint"
+        app:layout_constraintHorizontal_bias="0.476"
+        app:layout_constraintStart_toStartOf="@+id/constraint"
+        app:layout_constraintTop_toBottomOf="@+id/constraint"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="89dp"
+        android:layout_height="81dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.001"
+        app:srcCompat="@drawable/circle_tick" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Your Service Is Completed."
+        android:textColor="@color/design_default_color_on_secondary"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView8"
+        app:layout_constraintHorizontal_bias="0.564"
+        app:layout_constraintStart_toStartOf="@+id/imageView8"
+        app:layout_constraintTop_toBottomOf="@+id/imageView8"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint"
+        android:layout_width="345dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/white_color_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView16"
+        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintStart_toStartOf="@+id/textView16"
+        app:layout_constraintTop_toBottomOf="@+id/textView16"
+        app:layout_constraintVertical_bias="0.0">
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="342dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/constraint"
+            app:layout_constraintHorizontal_bias="0.504"
+            app:layout_constraintStart_toStartOf="@+id/constraint"
+            app:layout_constraintTop_toBottomOf="@+id/constraint"
+            app:layout_constraintVertical_bias="0.186"
+            app:srcCompat="@drawable/dialog_bg" />
+
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:text="Booking ID:"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textView26"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Reservation Date:"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+            app:layout_constraintEnd_toEndOf="@+id/textView24"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView24"
+            app:layout_constraintTop_toBottomOf="@+id/textView24"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Service Time:"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+            app:layout_constraintEnd_toEndOf="@+id/textView26"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView26"
+            app:layout_constraintTop_toBottomOf="@+id/textView26"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/tvMyOrderService"
+            android:layout_width="292dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/open_sans_italic"
+            android:text="Hair Cut"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+            app:layout_constraintEnd_toEndOf="@+id/tvMyOrderPrice"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView34"
+            app:layout_constraintTop_toBottomOf="@+id/textView34"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textView32"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Amount:"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+            app:layout_constraintEnd_toEndOf="@+id/textView28"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView28"
+            app:layout_constraintTop_toBottomOf="@+id/textView28"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textView34"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Service:"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView9"
+            app:layout_constraintEnd_toEndOf="@+id/textView32"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textView32"
+            app:layout_constraintTop_toBottomOf="@+id/textView32"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/tvMyOrderPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/open_sans_italic"
+            android:text="150.00"
+            android:textAlignment="textEnd"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="18sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvMyOrderPrice2"
+            app:layout_constraintEnd_toEndOf="@+id/tvMyOrderTime"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/tvMyOrderPrice2" />
+
+        <TextView
+            android:id="@+id/tvMyOrderPrice2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/open_sans_italic"
+            android:text=" RM "
+            android:textAlignment="textEnd"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="18sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView32"
+            app:layout_constraintEnd_toEndOf="@+id/tvMyOrderTime"
+            app:layout_constraintHorizontal_bias="0.687"
+            app:layout_constraintStart_toEndOf="@+id/textView32" />
+
+        <TextView
+            android:id="@+id/tvMyOrderTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01:30 PM"
+            android:textAlignment="textEnd"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="18sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView28"
+            app:layout_constraintEnd_toEndOf="@+id/tvMyOrderDate"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/textView28" />
+
+        <TextView
+            android:id="@+id/tvMyOrderDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="12/10/2020"
+            android:textAlignment="textEnd"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="18sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView26"
+            app:layout_constraintEnd_toEndOf="@+id/tvMyOrderNo"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@+id/textView26" />
+
+        <TextView
+            android:id="@+id/tvMyOrderNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:text="#1234567"
+            android:textAlignment="textEnd"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="18sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/textView24"
+            app:layout_constraintEnd_toEndOf="@+id/imageView9"
+            app:layout_constraintHorizontal_bias="0.988"
+            app:layout_constraintStart_toEndOf="@+id/textView24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
