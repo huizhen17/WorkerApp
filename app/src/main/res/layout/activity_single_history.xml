@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/dialog_bg">
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="56dp"
+            android:layout_height="54dp"
+            android:layout_marginBottom="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/circle_button" />
+
+        <TextView
+            android:id="@+id/tvOrderItemName2"
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="sans-serif"
+            android:text="Date/Time:"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+            app:layout_constraintEnd_toEndOf="@+id/tvOrderItemName"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tvOrderItemName"
+            app:layout_constraintTop_toBottomOf="@+id/tvOrderItemName"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/receiptID"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="#1234567890"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvOrderItemName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/tvOrderItemName"
+            app:layout_constraintTop_toTopOf="@+id/tvOrderItemName"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/receiptDateTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="4dp"
+            android:fontFamily="sans-serif-medium"
+            android:text="11/11/2020 01:30pm"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/tvOrderItemName2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/tvOrderItemName2" />
+
+        <TextView
+            android:id="@+id/tvOrderItemName"
+            android:layout_width="wrap_content"
+            android:layout_height="21dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif"
+            android:text="Receipt ID:"
+            android:textColor="@color/design_default_color_on_secondary"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/imageView2"
+            app:layout_constraintTop_toTopOf="@+id/imageView2"
+            app:layout_constraintVertical_bias="0.0" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

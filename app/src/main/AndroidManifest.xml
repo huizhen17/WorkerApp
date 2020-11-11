@@ -20,12 +20,16 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCd7Vr5-nw41wge3QdNWdRC-tBCp3y--00"/>
-        <activity android:name=".CompletePayment"></activity>
-        <activity android:name=".ReceivePayment" />
+        <activity android:name=".CompletePayment"
+            android:parentActivityName=".ReceivePayment"
+            android:label="Payment Complete"/>
+        <activity android:name=".ReceivePayment"
+            android:parentActivityName=".NavigateTask"
+            android:label="Payment Receive"/>
         <activity android:name=".ArrivalTask" />
         <activity android:name=".NavigateTask"
             android:parentActivityName=".MainActivity"
-            android:label="Check Order"></activity>
+            android:label="Check Order"/>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
