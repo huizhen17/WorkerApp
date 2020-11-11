@@ -3,6 +3,7 @@ package com.example.workerapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -10,6 +11,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.w3c.dom.Text;
 
@@ -30,6 +32,7 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
         mtvOrderTime = findViewById(R.id.tvMyOrderTime);
         mtvOrderName = findViewById(R.id.tvOrderName);
         mtvOrderPhone = findViewById(R.id.tvOrderPhone);
+        mvMapView.setClickable(true);
 
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
@@ -42,15 +45,29 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
+    public void onResume() {
+        mvMapView.onResume();
+        super.onResume();
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         gmap = googleMap;
-        gmap.setMinZoomPreference(12);
-        LatLng ny = new LatLng(40.7143528, -74.0059731);
-        gmap.moveCamera(CameraUpdateFactory.newLatLng(ny));
+        gmap.setMinZoomPreference(20);
+        LatLng ny = new LatLng(5.3338433, 100.2771833);
+        gmap.addMarker(new MarkerOptions().position(ny).title("Customer's House"));
+        gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(ny,20F));
     }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
+    }
+
+    public void btnShareLink_onClick(View view) {
+        //TODO::Display dialog box to shareable link
+    }
+
+    public void ivPhone_onClick(View view) {
     }
 }
