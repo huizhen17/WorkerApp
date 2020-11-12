@@ -28,7 +28,7 @@ public class HomeFragment extends Fragment {
     Button mbtnCheck;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    String userID;
+    String userID,status;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -36,6 +36,11 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home,container,false);
 
+        if (getArguments() != null) {
+            status = getArguments().getString("status");
+        }
+        Toast.makeText(getContext(),status,Toast.LENGTH_SHORT).show();
+        //String strtext = getArguments().getString("completePay");
         //TODO::Dialog box to accept the task
         //TODO::Check db whether gt task + status
 

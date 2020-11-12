@@ -6,9 +6,11 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -21,6 +23,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Text;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class NavigateTask extends AppCompatActivity implements OnMapReadyCallback {
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -28,6 +33,7 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
     String userID = mAuth.getCurrentUser().getUid();
     String orderStatus;
     String time1, time2, serviceTime;
+    String latitude, longitude;
     MapView mvMapView;
     TextView mtvOrderNo, mtvOrderTime, mtvOrderName, mtvOrderPhone, mbtnShareLink, metShareableLink, mbtnSendLink, mtvReSubmit;
     Dialog sendLinkDialog;
@@ -73,6 +79,8 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         gmap = googleMap;
         gmap.setMinZoomPreference(20);
+        latitude= String.valueOf(5.3338433);
+        longitude= String.valueOf(100.2771833);
         //TODO::Retreive latitude & longitude from firebase
         LatLng ny = new LatLng(5.3338433, 100.2771833);
         gmap.addMarker(new MarkerOptions().position(ny).title("Customer's House"));
@@ -86,6 +94,11 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
 
     public void btnShareLink_onClick(View view) {
         //TODO::Calculate Start Time
+        Uri gmmIntentUri = Uri.parse("google.navigation:q="+latitude+","+longitude);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
+
         displayDialog();
 
         mtvReSubmit.setOnClickListener(new View.OnClickListener() {
@@ -98,12 +111,17 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
         mbtnShareLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO::Calculate End Time
-                //TODO::Calculate difference between two times
-                //TODO::Intent time,name,ammount,service -> intent whole orderdetail class
+                //TODO::Calculate Start Time
+                Calendar calendar = Calendar.getInstance();
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
+                String startTime = simpleDateFormat.format(calendar.getTime());
+                //TODO::Intent Start Time,name,amount,service -> intent whole orderdetail class
                 orderStatus = "arrived";
+                Toast.makeText(NavigateTask.this,"Service Start Time: "+startTime,Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(NavigateTask.this,ReceivePayment.class);
+                i.putExtra("startTime",startTime);
                 startActivity(i);
+                finish();
             }
         });
     }
@@ -124,8 +142,10 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
                     metShareableLink.setError("Please paste the link here");
                     metShareableLink.requestFocus();
                 }else{
-                    String link = metShareableLink.getText().toString();
+                    String fullLink = metShareableLink.getText().toString();
+                    String link = fullLink.substring(fullLink.indexOf("https"));
                     //TODO::Store link to db
+                    Toast.makeText(NavigateTask.this,link,Toast.LENGTH_SHORT).show();
                     mbtnShareLink.setText("I'm Arrived");
                     sendLinkDialog.dismiss();
                     mtvReSubmit.setVisibility(View.VISIBLE);

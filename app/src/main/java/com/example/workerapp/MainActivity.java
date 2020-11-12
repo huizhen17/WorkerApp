@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
     Deque<Integer> integerDeque = new ArrayDeque<>(3);
     boolean flag = true;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
