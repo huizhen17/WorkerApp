@@ -36,7 +36,8 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home,container,false);
 
-        if (getArguments() != null) {
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
             status = getArguments().getString("status");
         }
         Toast.makeText(getContext(),status,Toast.LENGTH_SHORT).show();

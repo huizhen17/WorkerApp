@@ -10,11 +10,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class ReceivePayment extends AppCompatActivity {
 
     TextView mtvOrderName, mtvOrderAmount, mtvOrderService, mtvMyBalance;
     Button mbtnReceived;
     ImageView mivQrCode;
+    String startTime,mServiceTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,17 +35,34 @@ public class ReceivePayment extends AppCompatActivity {
 
         //TODO::Receive bundle : order detail(name,amount,service) + start time
         Bundle bundle = getIntent().getExtras();
-        String startTime = bundle.getString("startTime");
+        startTime = bundle.getString("startTime");
         Toast.makeText(ReceivePayment.this,"StartTime " + startTime,Toast.LENGTH_SHORT).show();
 
     }
 
     public void btnReceived_onClick(View view) {
-        //TODO::Calculate End Time
         //TODO::Calculate Time Differ
         //TODO:: Pass order detail(id,date,amount,service) + service time
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
+        String endTime = simpleDateFormat.format(calendar.getTime());
+
+        try {
+            Date d1 = simpleDateFormat.parse(startTime);
+            Date d2 = simpleDateFormat.parse(endTime);
+            long difference_In_Time = d2.getTime() - d1.getTime();
+            long difference_In_Minutes = (difference_In_Time/ (1000 * 60))% 60;
+            mServiceTime = String.valueOf(difference_In_Minutes);
+            Toast.makeText(ReceivePayment.this,mServiceTime,Toast.LENGTH_SHORT).show();
+
+        }catch (Exception e){
+
+        }
+
+
         Intent i = new Intent(ReceivePayment.this,CompletePayment.class);
+        i.putExtra("serviceTime",mServiceTime);
         startActivity(i);
-        finish();
+
     }
 }

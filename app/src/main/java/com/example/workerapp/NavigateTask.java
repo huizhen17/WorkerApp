@@ -48,7 +48,7 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
 
         mvMapView = findViewById(R.id.mapView);
         mtvOrderNo = findViewById(R.id.tvOrderNo);
-        mtvOrderTime = findViewById(R.id.tvMyOrderTime);
+        mtvOrderTime = findViewById(R.id.tvOrderTime);
         mtvOrderName = findViewById(R.id.tvOrderName);
         mtvOrderPhone = findViewById(R.id.tvOrderPhone);
         mtvReSubmit = findViewById(R.id.tvReSubmit);

@@ -160,12 +160,12 @@
                 android:textColor="@color/cardview_dark_background"
                 android:textSize="18sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/textView28"
-                app:layout_constraintEnd_toEndOf="@+id/tvOrderDate"
+                app:layout_constraintEnd_toEndOf="@+id/tvOrderTime"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/textView28" />
 
             <TextView
-                android:id="@+id/tvOrderDate"
+                android:id="@+id/tvOrderTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="01.00pm"
