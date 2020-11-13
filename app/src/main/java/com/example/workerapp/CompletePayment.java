@@ -41,13 +41,11 @@ public class CompletePayment extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("status", "From Activity");
         fragobj.setArguments(bundle);
-//        fragmentManager.beginTransaction().replace(R.id.fragment,fragobj).commitNow();
-        //return fragobj;
 
         //TODO::PROBLEM
-        Intent intent = new Intent(CompletePayment.this,MainActivity.class);
-        intent.putExtra("staus","from activity");
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        finish();
+       Intent intent = new Intent(CompletePayment.this,MainActivity.class);
+       intent.putExtra("status","from activity");
+       intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+       finish();
     }
 }

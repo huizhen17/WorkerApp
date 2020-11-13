@@ -63,6 +63,7 @@ public class ReceivePayment extends AppCompatActivity {
         Intent i = new Intent(ReceivePayment.this,CompletePayment.class);
         i.putExtra("serviceTime",mServiceTime);
         startActivity(i);
+        finish();
 
     }
 }

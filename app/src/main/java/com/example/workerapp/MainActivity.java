@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -56,6 +57,11 @@ public class MainActivity extends AppCompatActivity {
     private Fragment getFragment(int itemId) {
         switch (itemId){
             case  R.id.nav_home:
+                Bundle bundle = getIntent().getExtras();
+                if (bundle != null) {
+                    String status = bundle.getString("status");
+                    Toast.makeText(this,status,Toast.LENGTH_SHORT).show();
+                }
                 bottomNavigationView.getMenu().getItem(0).setChecked(true);
                 return new HomeFragment();
             case  R.id.nav_his:
