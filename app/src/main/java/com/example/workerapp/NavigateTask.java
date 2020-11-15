@@ -181,7 +181,6 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void ivPhone_onClick(View view) {
-        Toast.makeText(NavigateTask.this,"Hihi",Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "0164587592"));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling

@@ -4,6 +4,10 @@ public class HistoryDetail {
     private String historyID;
     private String historyDateTime;
 
+    public HistoryDetail(){
+        this("","");
+    }
+
     public HistoryDetail(String historyID, String historyDateTime) {
         this.historyID = historyID;
         this.historyDateTime = historyDateTime;
