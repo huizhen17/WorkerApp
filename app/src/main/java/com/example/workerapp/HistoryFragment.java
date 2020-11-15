@@ -42,7 +42,6 @@ public class HistoryFragment extends Fragment {
         historyAdapter = new HistoryAdapter(getContext(), historyDetails);
         mRvHistory.setAdapter(historyAdapter);
 
-
         return v;
     }
 }

@@ -14,7 +14,7 @@ public class CompletePayment extends AppCompatActivity {
     String status;
     FragmentManager fragmentManager;
     TextView mtvMyOrderNo, mtvMyOrderDate, mtvMyServiceTime, mtvMyOrderPrice, mtvMyOrderService;
-    String serviceTime;
+    String serviceTime,orderID,amount,service,date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,23 +29,25 @@ public class CompletePayment extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         serviceTime = bundle.getString("serviceTime");
-        Toast.makeText(this,serviceTime,Toast.LENGTH_SHORT).show();
+        orderID = bundle.getString("orderID");
+        amount = bundle.getString("amount");
+        service = bundle.getString("service");
+        date = bundle.getString("date");
+
         mtvMyServiceTime.setText(serviceTime);
+        mtvMyOrderNo.setText(orderID);
+        mtvMyOrderPrice.setText(amount);
+        mtvMyOrderService.setText(service);
+        mtvMyOrderDate.setText(date);
+
     }
 
     public void btnHome_onClick(View view) {
         status = "complete";
 
-        // set Fragmentclass Arguments
-        HomeFragment fragobj = new HomeFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("status", "From Activity");
-        fragobj.setArguments(bundle);
+        finish();
 
-        //TODO::PROBLEM
-       Intent intent = new Intent(CompletePayment.this,MainActivity.class);
-       intent.putExtra("status","from activity");
-       intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-       finish();
+        //TODO::Update status in orderDetail
+
     }
 }
