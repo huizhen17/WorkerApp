@@ -52,7 +52,6 @@ public class ReceivePayment extends AppCompatActivity {
     }
 
     public void btnReceived_onClick(View view) {
-        //TODO:: Pass order detail(id,date,amount,service) + service time
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
         String endTime = simpleDateFormat.format(calendar.getTime());

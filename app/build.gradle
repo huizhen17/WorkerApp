@@ -39,4 +39,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:22.0.0'
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.navercorp.volleyextensions:volley-requests:2.0.1'
+    //Java Mail Api Dependencies
+    implementation files('libs/activation.jar')
+    implementation files('libs/additionnal.jar')
+    implementation files('libs/mail.jar')
 }

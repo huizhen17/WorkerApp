@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userID=mAuth.getCurrentUser().getUid(),status="",orderID="",customerID="";
-    String name, phone, time,address,amount, service,date,orderStatus;
+    String name, email, phone, time,address,amount, service,date,orderStatus;
     Dialog taskAssignDialog;
     RequestQueue requestQueue;
     String userToken;
@@ -98,7 +98,9 @@ public class HomeFragment extends Fragment {
                 Intent i = new Intent(getContext(),NavigateTask.class);
                 i.putExtra("customerID",customerID);
                 i.putExtra("orderID",orderID);
+                i.putExtra("userToken",userToken);
                 i.putExtra("address",address);
+                i.putExtra("email",email);
                 i.putExtra("time",time);
                 i.putExtra("amount",amount);
                 i.putExtra("service",service);
@@ -148,6 +150,8 @@ public class HomeFragment extends Fragment {
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
+                email = documentSnapshot.getString("email");
+                userToken = documentSnapshot.getString("token");
                 name = documentSnapshot.getString("name");
                 mtvTaskName.setText(name);
                 phone = documentSnapshot.getString("phoneNo");
@@ -255,12 +259,22 @@ public class HomeFragment extends Fragment {
         mbtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Send notification to user
                 String title= "Appointment Accepted";
                 String body ="Your stylist will be " + getUserName() +
                             ".\nTelno: " + getPhoneNo() +
                             "\nTime: " + mtaskTime.getText().toString();
                 SendNotification sendNotification= new SendNotification();
                 requestQueue.add(sendNotification.specifUser(userToken,title,body));
+
+                //Send email notice user rider is assigned
+                String text ="Hi.\n Your appointment have been received. Your stylist will be " + getUserName() +
+                        ".\nBelow is your appointment info:\n\nTelno: " + getPhoneNo() +
+                        "\nDate: " + date +
+                        "\nTime: " + mtaskTime.getText().toString() +
+                        "\nService: " + service +"\nAmount: " + amount ;
+                SendMail sendMail = new SendMail(getContext(),email,title,text);
+                sendMail.execute();
 
                 DocumentReference workerCurrentStatus = db.collection("workerDetail").document(userID);
                 workerCurrentStatus.update("currentStatus","Busy").addOnSuccessListener(new OnSuccessListener<Void>() {

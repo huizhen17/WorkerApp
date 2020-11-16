@@ -16,6 +16,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
+import com.example.workerapp.FCM.SendNotification;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -35,6 +38,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.workerapp.MainActivity.getPhoneNo;
+import static com.example.workerapp.MainActivity.getUserName;
+
 public class NavigateTask extends AppCompatActivity implements OnMapReadyCallback {
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -42,12 +48,14 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
     String userID = mAuth.getCurrentUser().getUid();
     String orderStatus;
     String time1, time2, serviceTime;
-    String orderID = "", name, phone, time, address, amount, service, date,customerID;
+    String orderID = "", name, phone, time, address, amount, service, date,customerID,email;
     String latitude, longitude;
     MapView mvMapView;
     TextView mtvOrderNo, mtvOrderTime, mtvOrderName, mtvOrderPhone, mbtnShareLink,
             metShareableLink, mbtnSendLink, mtvReSubmit, mtvAddress;
     Dialog sendLinkDialog;
+    RequestQueue requestQueue;
+    String userToken;
 
     private GoogleMap gmap;
     private static final String MAP_VIEW_BUNDLE_KEY = "MapViewBundleKey";
@@ -68,13 +76,15 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
         sendLinkDialog = new Dialog(this);
         mvMapView.setClickable(true);
 
-        //TODO::Get customer name, phone, address, service, amount
-        //TODO::Get booking id, date, time
+        requestQueue = Volley.newRequestQueue(getApplicationContext().getApplicationContext());
+
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             name = bundle.getString("name");
             phone = bundle.getString("phone");
             address = bundle.getString("address");
+            email = bundle.getString("email");
+            userToken = bundle.getString("userToken");
             service = bundle.getString("service");
             amount = bundle.getString("amount");
             time = bundle.getString("time");
@@ -149,12 +159,14 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
                 documentReference.update("orderStatus",orderStatus).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(NavigateTask.this,"arrived",Toast.LENGTH_SHORT).show();
+
                     }
                 });
 
                 Intent i = new Intent(NavigateTask.this, ReceivePayment.class);
                 i.putExtra("startTime", startTime);
+                i.putExtra("name", name);
+                i.putExtra("userToken", userToken);
                 i.putExtra("name", name);
                 i.putExtra("amount", amount);
                 i.putExtra("service", service);
@@ -195,10 +207,26 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
                         documentReference.update(data).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                //Toast.makeText(NavigateTask.this,"arrived",Toast.LENGTH_SHORT).show();
+
                             }
                         });
-                        Toast.makeText(NavigateTask.this, link, Toast.LENGTH_SHORT).show();
+
+                        //Send notification for user about rider on the way
+                        String titleNoti= "Rider OTW";
+                        String body ="You can track your rider now!";
+                        SendNotification sendNotification= new SendNotification();
+                        requestQueue.add(sendNotification.specifUser(userToken,titleNoti,body));
+                        //Send email notice user rider is on the way
+                        String title="Your Rider is On The Way";
+                        String text ="This is the link for track your stylish: "+ link +"\nYour stylist will be " + getUserName() +
+                            ".\nBelow is your appointment info:\n\nTelno: " + phone +
+                            "\nDate: " + date +
+                            "\nTime: " + time +
+                            "\nService: " + service +
+                            "\nAmount: " + amount ;
+                        SendMail sendMail = new SendMail(NavigateTask.this,email,title,text);
+                        sendMail.execute();
+
                         mbtnShareLink.setText("I'm Arrived");
                         sendLinkDialog.dismiss();
                         mtvReSubmit.setVisibility(View.VISIBLE);
@@ -211,15 +239,10 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
     public void ivPhone_onClick(View view) {
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "0164587592"));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return;
         }
         startActivity(intent);
     }
+
 }

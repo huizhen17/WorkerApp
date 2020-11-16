@@ -9,12 +9,18 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class CompletePayment extends AppCompatActivity {
 
     String status;
     FragmentManager fragmentManager;
     TextView mtvMyOrderNo, mtvMyOrderDate, mtvMyServiceTime, mtvMyOrderPrice, mtvMyOrderService;
     String serviceTime,orderID,amount,service,date;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    String userID=mAuth.getCurrentUser().getUid();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,7 @@ public class CompletePayment extends AppCompatActivity {
         finish();
 
         //TODO::Update status in orderDetail
+        //TODO::Remove order from db
 
     }
 }
