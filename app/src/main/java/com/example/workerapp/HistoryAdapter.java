@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder>{
     Context context;
-    //TODO::Adapter for history
     private ArrayList<HistoryDetail> historyList;
 
     //Create constructor for cart adapter

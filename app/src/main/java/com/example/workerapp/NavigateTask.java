@@ -171,6 +171,8 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
                 i.putExtra("amount", amount);
                 i.putExtra("service", service);
                 i.putExtra("orderID", orderID);
+                i.putExtra("time",time);
+                i.putExtra("customerID", customerID);
                 i.putExtra("date", date);
                 startActivity(i);
                 finish();

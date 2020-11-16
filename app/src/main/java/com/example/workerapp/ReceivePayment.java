@@ -19,8 +19,8 @@ public class ReceivePayment extends AppCompatActivity {
     TextView mtvOrderName, mtvOrderAmount, mtvOrderService, mtvMyBalance;
     Button mbtnReceived;
     ImageView mivQrCode;
-    String startTime,mServiceTime,serviceTime,name,amount,service;
-    String orderID, date;
+    String startTime,mServiceTime,serviceTime,name,amount,service,customerID;
+    String orderID, date,time;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +34,12 @@ public class ReceivePayment extends AppCompatActivity {
         mbtnReceived = findViewById(R.id.btnReceived);
         mivQrCode = findViewById(R.id.ivQrCode);
 
-        //TODO::Receive bundle : order detail(name,amount,service) + start time
         Bundle bundle = getIntent().getExtras();
         startTime = bundle.getString("startTime");
         serviceTime = bundle.getString("serviceTime");
         name = bundle.getString("name");
+        customerID = bundle.getString("customerID");
+        time = bundle.getString("time");
         amount = bundle.getString("amount");
         service = bundle.getString("service");
         date = bundle.getString("date");
@@ -46,8 +47,6 @@ public class ReceivePayment extends AppCompatActivity {
         mtvOrderName.setText(name);
         mtvOrderAmount.setText(amount);
         mtvOrderService.setText(service);
-
-        //Toast.makeText(ReceivePayment.this,"StartTime " + startTime,Toast.LENGTH_SHORT).show();
 
     }
 
@@ -68,12 +67,13 @@ public class ReceivePayment extends AppCompatActivity {
 
         }
 
-
         Intent i = new Intent(ReceivePayment.this,CompletePayment.class);
         i.putExtra("serviceTime",mServiceTime);
         i.putExtra("orderID",orderID);
         i.putExtra("amount",amount);
         i.putExtra("service",service);
+        i.putExtra("time",time);
+        i.putExtra("customerID",customerID);
         i.putExtra("date",date);
         startActivity(i);
         finish();

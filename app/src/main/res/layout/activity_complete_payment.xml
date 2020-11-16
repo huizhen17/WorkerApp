@@ -257,7 +257,7 @@
             android:text="#1234567"
             android:textAlignment="textEnd"
             android:textColor="@color/cardview_dark_background"
-            android:textSize="18sp"
+            android:textSize="16sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/textView24"
             app:layout_constraintEnd_toEndOf="@+id/imageView9"
             app:layout_constraintHorizontal_bias="0.988"

@@ -54,11 +54,6 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_home,container,false);
 
-        //String strtext = getArguments().getString("completePay");
-        //TODO::Dialog box to accept the task
-        //TODO::Check db whether gt task + status
-        //TODO::If no task jiu invisible all
-
         requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
 
         mtvCredit = v.findViewById(R.id.tvCredit);
