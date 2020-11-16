@@ -1,5 +1,6 @@
 package com.example.workerapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -21,13 +22,18 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NavigateTask extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -36,7 +42,7 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
     String userID = mAuth.getCurrentUser().getUid();
     String orderStatus;
     String time1, time2, serviceTime;
-    String orderID = "", name, phone, time, address, amount, service, date;
+    String orderID = "", name, phone, time, address, amount, service, date,customerID;
     String latitude, longitude;
     MapView mvMapView;
     TextView mtvOrderNo, mtvOrderTime, mtvOrderName, mtvOrderPhone, mbtnShareLink,
@@ -74,6 +80,7 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
             time = bundle.getString("time");
             orderID = bundle.getString("orderID");
             date = bundle.getString("date");
+            customerID = bundle.getString("customerID");
         }
 
         mtvOrderNo.setText(orderID);
@@ -138,7 +145,14 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
                 String startTime = simpleDateFormat.format(calendar.getTime());
                 orderStatus = "arrived";
-                Toast.makeText(NavigateTask.this, amount + "123", Toast.LENGTH_SHORT).show();
+                DocumentReference documentReference = db.collection("userDetail").document(customerID).collection("currentOrder").document("currentOrder");
+                documentReference.update("orderStatus",orderStatus).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Toast.makeText(NavigateTask.this,"arrived",Toast.LENGTH_SHORT).show();
+                    }
+                });
+
                 Intent i = new Intent(NavigateTask.this, ReceivePayment.class);
                 i.putExtra("startTime", startTime);
                 i.putExtra("name", name);
@@ -169,12 +183,26 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
                     metShareableLink.requestFocus();
                 } else {
                     String fullLink = metShareableLink.getText().toString();
-                    String link = fullLink.substring(fullLink.indexOf("https"));
-                    //TODO::Store link to db
-                    Toast.makeText(NavigateTask.this, link, Toast.LENGTH_SHORT).show();
-                    mbtnShareLink.setText("I'm Arrived");
-                    sendLinkDialog.dismiss();
-                    mtvReSubmit.setVisibility(View.VISIBLE);
+                    /*if(!fullLink.matches("(.*)https(.*)")){
+                        Toast.makeText(NavigateTask.this, "Invalid Link Provided", Toast.LENGTH_SHORT).show();
+                    }else{*/
+                        String link = fullLink.substring(fullLink.indexOf("https"));
+                        //Store link to firebase and update the order status
+                        DocumentReference documentReference = db.collection("userDetail").document(customerID).collection("currentOrder").document("currentOrder");
+                        Map<String,Object> data = new HashMap<>();
+                        data.put("orderLink",link);
+                        data.put("orderStatus","rider OTW");
+                        documentReference.update(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                //Toast.makeText(NavigateTask.this,"arrived",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        Toast.makeText(NavigateTask.this, link, Toast.LENGTH_SHORT).show();
+                        mbtnShareLink.setText("I'm Arrived");
+                        sendLinkDialog.dismiss();
+                        mtvReSubmit.setVisibility(View.VISIBLE);
+                    //}
                 }
             }
         });

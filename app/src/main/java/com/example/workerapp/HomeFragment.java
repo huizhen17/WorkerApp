@@ -43,10 +43,11 @@ public class HomeFragment extends Fragment {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userID=mAuth.getCurrentUser().getUid(),status="",orderID="",customerID="";
-    String name, phone, time,address,amount, service,date;
+    String name, phone, time,address,amount, service,date,orderStatus;
     Dialog taskAssignDialog;
     RequestQueue requestQueue;
     String userToken;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,21 +80,23 @@ public class HomeFragment extends Fragment {
                     if(value.exists()){
                         status = value.getString("currentStatus");
                         if(status.equalsIgnoreCase("free")){
-                            displayDialog();
+                            mbtnCheck.setVisibility(View.GONE);
+                            checkNewOrder();
                         }else{
+                            //status = busy
+                            mbtnCheck.setVisibility(View.VISIBLE);
+                            //mtvAddress.setVisibility(View.VISIBLE);
                             checkCurrentOrder();
                         }
                     }
                 }
             }
         });
-
         mbtnCheck.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO::Pass customer info
-                //Toast.makeText(getContext(),orderID+"123"+test,Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(getContext(),NavigateTask.class);
+                i.putExtra("customerID",customerID);
                 i.putExtra("orderID",orderID);
                 i.putExtra("address",address);
                 i.putExtra("time",time);
@@ -109,15 +112,28 @@ public class HomeFragment extends Fragment {
         return v;
     }
 
+    public void checkNewOrder() {
+        DocumentReference documentReference = db.collection("workerDetail").document(userID).collection("currentOrderDetail").document("currentOrder");
+        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(error==null){
+                    if(value.exists()){
+                        displayDialog();
+                    }
+                }
+            }
+        });
+    }
+
     private void checkCurrentOrder() {
         //Check current order
         DocumentReference currentOrder = db.collection("workerDetail").document(userID).collection("currentOrderDetail").document("currentOrder");
         currentOrder.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                orderID = documentSnapshot.getString("orderID");
                 customerID = documentSnapshot.getString("userID");
-                displayOrderDetail(orderID,customerID);
+                displayOrderDetail(customerID);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -127,7 +143,7 @@ public class HomeFragment extends Fragment {
         });
     }
 
-    private void displayOrderDetail(final String orderID, final String customerID) {
+    private void displayOrderDetail(String customerID) {
         DocumentReference userRef = db.collection("userDetail").document(customerID);
         userRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -150,7 +166,8 @@ public class HomeFragment extends Fragment {
         orderRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                mtvTaskNo.setText( documentSnapshot.getString("orderID"));
+                orderID = documentSnapshot.getString("orderID");
+                mtvTaskNo.setText(orderID);
                 mtvTaskDate.setText(documentSnapshot.getString("orderDate"));
                 time = documentSnapshot.getString("orderTime");
                 mtvTaskTime.setText(time);
@@ -180,11 +197,12 @@ public class HomeFragment extends Fragment {
         mtaskAddress = taskAssignDialog.findViewById(R.id.taskAddress);
         mbtnAccept = taskAssignDialog.findViewById(R.id.btnAccept);
 
+        //Get current customer ID
         DocumentReference currentOrder = db.collection("workerDetail").document(userID).collection("currentOrderDetail").document("currentOrder");
         currentOrder.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                orderID = documentSnapshot.getString("orderID");
+                //orderID = documentSnapshot.getString("orderID");
                 customerID = documentSnapshot.getString("userID");
                 displayDialogDetail(customerID);
             }
@@ -194,7 +212,6 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getContext(),"No task assigned.",Toast.LENGTH_SHORT).show();
             }
         });
-
 
     }
 
@@ -219,7 +236,8 @@ public class HomeFragment extends Fragment {
         orderRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                mtaskId.setText( documentSnapshot.getString("orderID"));
+                orderID = documentSnapshot.getString("orderID");
+                mtaskId.setText(orderID);
                 mtaskDate.setText(documentSnapshot.getString("orderDate"));
                 mtaskTime.setText(documentSnapshot.getString("orderTime"));
             }
@@ -229,6 +247,10 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getContext(),"User details failed.",Toast.LENGTH_SHORT).show();
             }
         });
+
+        //Update status = accepted
+        DocumentReference documentReference = db.collection("userDetail").document(customerID).collection("currentOrder").document("currentOrder");
+        documentReference.update("orderStatus","accepted");
 
         mbtnAccept.setOnClickListener(new View.OnClickListener() {
             @Override
