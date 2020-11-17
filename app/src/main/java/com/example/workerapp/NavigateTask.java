@@ -136,7 +136,7 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-
+        //Display reference map for rider
         LatLng ny = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
         gmap.addMarker(new MarkerOptions().position(ny).title("Customer's House"));
         gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(ny, 20F));
@@ -148,6 +148,7 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void btnShareLink_onClick(View view) {
+        //Using Google Maps Deep Linking
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latitude + "," + longitude);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
