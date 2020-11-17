@@ -26,9 +26,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.w3c.dom.Text;
@@ -120,10 +122,22 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         gmap = googleMap;
         gmap.setMinZoomPreference(20);
+
+        //Initialize to INTI's longitude and latitude
         latitude = String.valueOf(5.3338433);
         longitude = String.valueOf(100.2771833);
-        //TODO::Retreive latitude & longitude from firebase
-        LatLng ny = new LatLng(5.3338433, 100.2771833);
+
+        DocumentReference documentReference = db.collection("userDetail").document(customerID).collection("currentOrder").document("currentOrder");
+        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                latitude = documentSnapshot.getString("orderLatitude");
+                longitude = documentSnapshot.getString("orderLongitude");
+            }
+        });
+
+
+        LatLng ny = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
         gmap.addMarker(new MarkerOptions().position(ny).title("Customer's House"));
         gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(ny, 20F));
     }
@@ -162,7 +176,11 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
 
                     }
                 });
-
+                //Send notification for user about rider arrived
+                String titleNoti= "Rider Arrived";
+                String body ="Your rider has arrived.";
+                SendNotification sendNotification= new SendNotification();
+                requestQueue.add(sendNotification.specifUser(userToken,titleNoti,body));
                 Intent i = new Intent(NavigateTask.this, ReceivePayment.class);
                 i.putExtra("startTime", startTime);
                 i.putExtra("name", name);
@@ -197,42 +215,39 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
                     metShareableLink.requestFocus();
                 } else {
                     String fullLink = metShareableLink.getText().toString();
-                    /*if(!fullLink.matches("(.*)https(.*)")){
-                        Toast.makeText(NavigateTask.this, "Invalid Link Provided", Toast.LENGTH_SHORT).show();
-                    }else{*/
-                        String link = fullLink.substring(fullLink.indexOf("https"));
-                        //Store link to firebase and update the order status
-                        DocumentReference documentReference = db.collection("userDetail").document(customerID).collection("currentOrder").document("currentOrder");
-                        Map<String,Object> data = new HashMap<>();
-                        data.put("orderLink",link);
-                        data.put("orderStatus","rider OTW");
-                        documentReference.update(data).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
+                    String link = fullLink.substring(fullLink.indexOf("https"));
+                    //Store link to firebase and update the order status
+                    DocumentReference documentReference = db.collection("userDetail").document(customerID).collection("currentOrder").document("currentOrder");
+                    Map<String,Object> data = new HashMap<>();
+                    data.put("orderLink",link);
+                    data.put("orderStatus","rider OTW");
+                    documentReference.update(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
 
-                            }
-                        });
+                        }
+                    });
 
-                        //Send notification for user about rider on the way
-                        String titleNoti= "Rider OTW";
-                        String body ="You can track your rider now!";
-                        SendNotification sendNotification= new SendNotification();
-                        requestQueue.add(sendNotification.specifUser(userToken,titleNoti,body));
-                        //Send email notice user rider is on the way
-                        String title="Your Rider is On The Way";
-                        String text ="This is the link for track your stylish: "+ link +"\nYour stylist will be " + getUserName() +
-                            ".\nBelow is your appointment info:\n\nTelno: " + phone +
-                            "\nDate: " + date +
-                            "\nTime: " + time +
-                            "\nService: " + service +
-                            "\nAmount: " + amount ;
-                        SendMail sendMail = new SendMail(NavigateTask.this,email,title,text);
-                        sendMail.execute();
+                    //Send notification for user about rider on the way
+                    String titleNoti= "Rider OTW";
+                    String body ="You can track your rider now!";
+                    SendNotification sendNotification= new SendNotification();
+                    requestQueue.add(sendNotification.specifUser(userToken,titleNoti,body));
+                    //Send email notice user rider is on the way
+                    String title="Your Rider is On The Way";
+                    String text ="This is the link for track your stylish: "+ link +"\nYour stylist will be " + getUserName() +
+                        ".\nBelow is your appointment info:\n\nTelno: " + phone +
+                        "\nDate: " + date +
+                        "\nTime: " + time +
+                        "\nService: " + service +
+                        "\nAmount: " + amount ;
+                    SendMail sendMail = new SendMail(NavigateTask.this,email,title,text);
+                    sendMail.execute();
 
-                        mbtnShareLink.setText("I'm Arrived");
-                        sendLinkDialog.dismiss();
-                        mtvReSubmit.setVisibility(View.VISIBLE);
-                    //}
+                    mbtnShareLink.setText("I've Arrived");
+                    sendLinkDialog.dismiss();
+                    mtvReSubmit.setVisibility(View.VISIBLE);
+
                 }
             }
         });
@@ -242,7 +257,6 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
         //TODO::CHANGE PHONE NO
         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "0164587592"));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-
             return;
         }
         startActivity(intent);

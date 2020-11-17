@@ -146,7 +146,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 email = documentSnapshot.getString("email");
-                Toast.makeText(getContext(),email + "User details",Toast.LENGTH_SHORT).show();
                 userToken = documentSnapshot.getString("token");
                 name = documentSnapshot.getString("name");
                 mtvTaskName.setText(name);

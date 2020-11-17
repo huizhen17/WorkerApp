@@ -101,6 +101,7 @@ public class CompletePayment extends AppCompatActivity {
         Intent i = new Intent(CompletePayment.this,MainActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(i);
+        finish();
 
     }
 }

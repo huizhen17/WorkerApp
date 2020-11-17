@@ -104,12 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        integerDeque.pop();
-        if(!integerDeque.isEmpty()){
-            loadFragment(getFragment(integerDeque.peek()));
-        }else{
-            finish();
-        }
+        finish();
     }
 
     @Override

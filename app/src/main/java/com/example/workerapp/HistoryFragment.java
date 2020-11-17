@@ -32,8 +32,7 @@ public class HistoryFragment extends Fragment {
     ArrayList<HistoryDetail> historyList = new ArrayList<>();
     RecyclerView mRvHistory;
     HistoryAdapter historyAdapter;
-    String historyID, historyDateTime;
-    String userID=mAuth.getCurrentUser().getUid(), date, time;
+    String userID=mAuth.getCurrentUser().getUid();
     int counter;
 
     @Override

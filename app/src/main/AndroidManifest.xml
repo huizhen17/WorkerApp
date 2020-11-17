@@ -27,7 +27,6 @@
         <activity android:name=".ReceivePayment"
             android:parentActivityName=".NavigateTask"
             android:label="Payment Receive"/>
-        <activity android:name=".ArrivalTask" />
         <activity android:name=".NavigateTask"
             android:parentActivityName=".MainActivity"
             android:label="Check Order"/>
