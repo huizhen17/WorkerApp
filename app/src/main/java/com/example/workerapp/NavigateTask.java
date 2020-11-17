@@ -181,6 +181,7 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
                 String body ="Your rider has arrived.";
                 SendNotification sendNotification= new SendNotification();
                 requestQueue.add(sendNotification.specifUser(userToken,titleNoti,body));
+
                 Intent i = new Intent(NavigateTask.this, ReceivePayment.class);
                 i.putExtra("startTime", startTime);
                 i.putExtra("name", name);
@@ -236,7 +237,8 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
                     //Send email notice user rider is on the way
                     String title="Your Rider is On The Way";
                     String text ="This is the link for track your stylish: "+ link +"\nYour stylist will be " + getUserName() +
-                        ".\nBelow is your appointment info:\n\nTelno: " + phone +
+                        ".\nRider Telno: " +  getPhoneNo() +
+                        ".\n\nBelow is your appointment info:\n" +
                         "\nDate: " + date +
                         "\nTime: " + time +
                         "\nService: " + service +

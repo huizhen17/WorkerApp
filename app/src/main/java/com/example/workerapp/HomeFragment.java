@@ -148,10 +148,9 @@ public class HomeFragment extends Fragment {
                 email = documentSnapshot.getString("email");
                 userToken = documentSnapshot.getString("token");
                 name = documentSnapshot.getString("name");
+                phone = documentSnapshot.getString("phoneNo");
                 mtvTaskName.setText(name);
                 mtvTaskPhone.setText(phone);
-                address = documentSnapshot.getString("address");
-                mtvAddress.setText(address);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -165,13 +164,15 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 orderID = documentSnapshot.getString("orderID");
-                mtvTaskNo.setText(orderID);
                 mtvTaskDate.setText(documentSnapshot.getString("orderDate"));
                 time = documentSnapshot.getString("orderTime");
-                mtvTaskTime.setText(time);
                 date = documentSnapshot.getString("orderDate");
                 amount = documentSnapshot.getString("orderPrice");
                 service = documentSnapshot.getString("orderService");
+                address = documentSnapshot.getString("orderAddress");
+                mtvTaskNo.setText(orderID);
+                mtvTaskTime.setText(time);
+                mtvAddress.setText(address);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -219,7 +220,6 @@ public class HomeFragment extends Fragment {
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 mtaskName.setText( documentSnapshot.getString("name"));
                 mtaskPhone.setText(documentSnapshot.getString("phoneNo"));
-                mtaskAddress.setText(documentSnapshot.getString("address"));
                 email = documentSnapshot.getString("email");
                 saveToken(documentSnapshot.getString("token"));
             }
@@ -235,9 +235,16 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 orderID = documentSnapshot.getString("orderID");
+                date = documentSnapshot.getString("orderDate");
+                time = documentSnapshot.getString("orderTime");
+                address = documentSnapshot.getString("orderAddress");
+                amount = documentSnapshot.getString("orderPrice");
+                service = documentSnapshot.getString("orderService");
+                mtaskAddress.setText(address);
                 mtaskId.setText(orderID);
-                mtaskDate.setText(documentSnapshot.getString("orderDate"));
-                mtaskTime.setText(documentSnapshot.getString("orderTime"));
+                mtaskDate.setText(date);
+                mtaskTime.setText(time);
+                mtaskTime.setText(time);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -262,7 +269,7 @@ public class HomeFragment extends Fragment {
                 requestQueue.add(sendNotification.specifUser(userToken,title,body));
 
                 //Send email notice user rider is assigned
-                String text ="Hi.\n Your appointment have been received. Your stylist will be " + getUserName() +
+                String text ="Hi.\nYour appointment have been received. Your stylist will be " + getUserName() +
                         ".\nBelow is your appointment info:\n\nTelno: " + getPhoneNo() +
                         "\nDate: " + date +
                         "\nTime: " + mtaskTime.getText().toString() +
@@ -282,6 +289,32 @@ public class HomeFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //Check worker status is free display task assign
+        DocumentReference workerCurrentStatus = db.collection("workerDetail").document(userID);
+        workerCurrentStatus.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(error==null){
+                    if(value.exists()){
+                        status = value.getString("currentStatus");
+                        if(status.equalsIgnoreCase("free")){
+                            mbtnCheck.setVisibility(View.GONE);
+                            checkNewOrder();
+                        }else{
+                            //status = busy
+                            mbtnCheck.setVisibility(View.VISIBLE);
+                            //mtvAddress.setVisibility(View.VISIBLE);
+                            checkCurrentOrder();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void saveToken(String token) {

@@ -25,8 +25,6 @@ import java.util.ArrayList;
 
 public class HistoryFragment extends Fragment {
 
-    //TODO::HISTORY RETRIEVE GT PROBLEM
-
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     ArrayList<HistoryDetail> historyList = new ArrayList<>();
