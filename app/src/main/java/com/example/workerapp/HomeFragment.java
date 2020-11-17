@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userID=mAuth.getCurrentUser().getUid(),status="",orderID="",customerID="";
-    String name, email, phone, time,address,amount, service,date,orderStatus;
+    String name, email, phone, time,address,amount, service,date;
     Dialog taskAssignDialog;
     RequestQueue requestQueue;
     String userToken;
@@ -146,10 +146,10 @@ public class HomeFragment extends Fragment {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 email = documentSnapshot.getString("email");
+                Toast.makeText(getContext(),email + "User details",Toast.LENGTH_SHORT).show();
                 userToken = documentSnapshot.getString("token");
                 name = documentSnapshot.getString("name");
                 mtvTaskName.setText(name);
-                phone = documentSnapshot.getString("phoneNo");
                 mtvTaskPhone.setText(phone);
                 address = documentSnapshot.getString("address");
                 mtvAddress.setText(address);
@@ -201,7 +201,6 @@ public class HomeFragment extends Fragment {
         currentOrder.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                //orderID = documentSnapshot.getString("orderID");
                 customerID = documentSnapshot.getString("userID");
                 displayDialogDetail(customerID);
             }
@@ -222,6 +221,7 @@ public class HomeFragment extends Fragment {
                 mtaskName.setText( documentSnapshot.getString("name"));
                 mtaskPhone.setText(documentSnapshot.getString("phoneNo"));
                 mtaskAddress.setText(documentSnapshot.getString("address"));
+                email = documentSnapshot.getString("email");
                 saveToken(documentSnapshot.getString("token"));
             }
         }).addOnFailureListener(new OnFailureListener() {

@@ -70,9 +70,9 @@ public class CompletePayment extends AppCompatActivity {
         //Store data to historyDetail
         DocumentReference documentReference = db.collection("workerDetail").document(userID).collection("workHistory").document(orderID);
         Map<String,Object> historyData = new HashMap<>();
-        historyData.put("orderID",orderID);
-        historyData.put("customerID",customerID);
-        historyData.put("orderDateTime",orderDateTime);
+        historyData.put("historyID",orderID);
+        historyData.put("historyCustomerID",customerID);
+        historyData.put("historyDateTime",orderDateTime);
         documentReference.set(historyData).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {

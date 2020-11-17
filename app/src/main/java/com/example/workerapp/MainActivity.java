@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 if(error==null){
                     if(value.exists()){
                         userName = value.getString("name");
-                        phoneNo = value.getString("phoneNo");
+                        phoneNo = value.getString("phone");
                         email = value.getString("email");
                     }
                 }
