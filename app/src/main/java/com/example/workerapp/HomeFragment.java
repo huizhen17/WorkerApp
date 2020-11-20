@@ -43,7 +43,7 @@ public class HomeFragment extends Fragment {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String userID=mAuth.getCurrentUser().getUid(),status="",orderID="",customerID="";
-    String name, email, phone, time,address,amount, service,date;
+    String name, email, phone, time,address,amount, service,date,latitude,longitude;
     Dialog taskAssignDialog;
     RequestQueue requestQueue;
     String userToken;
@@ -102,6 +102,8 @@ public class HomeFragment extends Fragment {
                 i.putExtra("name",name);
                 i.putExtra("date",date);
                 i.putExtra("phone",phone);
+                i.putExtra("latitude",latitude);
+                i.putExtra("longitude",longitude);
                 getActivity().startActivity(i);
             }
         });
@@ -170,6 +172,8 @@ public class HomeFragment extends Fragment {
                 amount = documentSnapshot.getString("orderPrice");
                 service = documentSnapshot.getString("orderService");
                 address = documentSnapshot.getString("orderAddress");
+                latitude = documentSnapshot.getString("orderLatitude");
+                longitude = documentSnapshot.getString("orderLongitude");
                 mtvTaskNo.setText(orderID);
                 mtvTaskTime.setText(time);
                 mtvAddress.setText(address);
@@ -289,6 +293,32 @@ public class HomeFragment extends Fragment {
             }
         });
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Check worker status is free display task assign
+        DocumentReference workerCurrentStatus = db.collection("workerDetail").document(userID);
+        workerCurrentStatus.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                if(error==null){
+                    if(value.exists()){
+                        status = value.getString("currentStatus");
+                        if(status.equalsIgnoreCase("free")){
+                            mbtnCheck.setVisibility(View.GONE);
+                            checkNewOrder();
+                        }else{
+                            //status = busy
+                            mbtnCheck.setVisibility(View.VISIBLE);
+                            //mtvAddress.setVisibility(View.VISIBLE);
+                            checkCurrentOrder();
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override

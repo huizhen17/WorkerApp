@@ -51,7 +51,7 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
     String orderStatus;
     String time1, time2, serviceTime;
     String orderID = "", name, phone, time, address, amount, service, date,customerID,email;
-    String latitude, longitude;
+    String latitude="", longitude="";
     MapView mvMapView;
     TextView mtvOrderNo, mtvOrderTime, mtvOrderName, mtvOrderPhone, mbtnShareLink,
             metShareableLink, mbtnSendLink, mtvReSubmit, mtvAddress;
@@ -93,6 +93,8 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
             orderID = bundle.getString("orderID");
             date = bundle.getString("date");
             customerID = bundle.getString("customerID");
+            latitude = bundle.getString("latitude");
+            longitude = bundle.getString("longitude");
         }
 
         mtvOrderNo.setText(orderID);
@@ -123,21 +125,8 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
         gmap = googleMap;
         gmap.setMinZoomPreference(20);
 
-        //Initialize to INTI's longitude and latitude
-        latitude = String.valueOf(5.3338433);
-        longitude = String.valueOf(100.2771833);
-
-        DocumentReference documentReference = db.collection("userDetail").document(customerID).collection("currentOrder").document("currentOrder");
-        documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-            @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                latitude = documentSnapshot.getString("orderLatitude");
-                longitude = documentSnapshot.getString("orderLongitude");
-            }
-        });
-
         //Display reference map for rider
-        LatLng ny = new LatLng(Double.valueOf(latitude), Double.valueOf(longitude));
+        LatLng ny = new LatLng(Double.parseDouble(latitude), Double.parseDouble(longitude));
         gmap.addMarker(new MarkerOptions().position(ny).title("Customer's House"));
         gmap.moveCamera(CameraUpdateFactory.newLatLngZoom(ny, 20F));
     }
@@ -257,8 +246,8 @@ public class NavigateTask extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     public void ivPhone_onClick(View view) {
-        //TODO::CHANGE PHONE NO
-        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "0164587592"));
+        //TODO::Retrieve Rider Phone No From Firebase
+        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "RIDER_PHONE_NO"));
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             return;
         }

@@ -18,9 +18,11 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <!--TODO::REPLACE WITH YOUR API KEY-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCd7Vr5-nw41wge3QdNWdRC-tBCp3y--00"/>
+            android:value="YOUR_API_KEY"/>
+
         <activity android:name=".CompletePayment"
             android:parentActivityName=".ReceivePayment"
             android:label="Payment Complete"/>

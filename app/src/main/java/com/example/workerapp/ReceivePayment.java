@@ -47,7 +47,6 @@ public class ReceivePayment extends AppCompatActivity {
         mtvOrderName.setText(name);
         mtvOrderAmount.setText(amount);
         mtvOrderService.setText(service);
-
     }
 
     public void btnReceived_onClick(View view) {
@@ -61,7 +60,6 @@ public class ReceivePayment extends AppCompatActivity {
             long difference_In_Time = d2.getTime() - d1.getTime();
             long difference_In_Minutes = (difference_In_Time/ (1000 * 60))% 60;
             mServiceTime = String.valueOf(difference_In_Minutes);
-            Toast.makeText(ReceivePayment.this,mServiceTime,Toast.LENGTH_SHORT).show();
 
         }catch (Exception e){
 
